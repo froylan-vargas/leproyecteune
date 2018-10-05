@@ -8,6 +8,22 @@
 </head>
 <body>
     //HOLA!//
-    
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript">
+  // https://api.nomics.com/v1/exchange-rates/history?key=10bea72252e19dee1862e3d5958bef73&currency=ETH&start=2018-04-14T00%3A00%3A00Z&end=2018-10-04T00%3A00%3A00Z
+    var currency = "BTC"
+    var startDate = "2017-10-04"
+    var endDate = "2018-10-04"
+    var queryURL = "https://api.nomics.com/v1/exchange-rates/history?key=10bea72252e19dee1862e3d5958bef73&currency=" + currency + "&start=" + startDate + "T00%3A00%3A00Z&end=" + endDate + "T00%3A00%3A00Z"
+
+      $.ajax({
+      url: queryURL,
+      method: "GET"
+    }).then(function(response) {
+      console.log(response);
+    });
+
+  </script>
 </body>
 </html>
