@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css?family=Caveat|Indie+Flower');
+body {
+    background: url("../IMAGES/image1.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+
+}
+nav {font-weight: bolder !important;
+
+}
+span {color: aliceblue;
+    font-family: 'Indie Flower', cursive;
+
+}
+hr {display: block;
+   height: 1px;
+   border: 0;
+   border-top: 1px solid #ccc;
+   margin: 1em 0;
+   padding: 0;
+
+}
+#intromessage { font-size: 40px
+
+}
+#brand { font-family: 'Notable', sans-serif;
+         font-size: 40px
+
+
+}
