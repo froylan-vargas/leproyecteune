@@ -28,14 +28,19 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
               <li class="nav-item">
-                <a class="nav-link" href="#">Home</a>
+                <a class="nav-link btn btn-lg" href="#">About Us</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Learn</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Bitcoin</a>
-              </li>
+              <div class="btn-group">
+                <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Choose your crypto...
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="#">Bitcoin</a>
+                  <a class="dropdown-item" href="#">Etherum</a>
+                  <a class="dropdown-item" href="#">Litecoin</a>
+                </div>
+              </div>
+              </div>
             </ul>
           </div>
         </nav>
@@ -57,13 +62,43 @@
       </div>
     </section>
 
-    <!--Test-->
-
-    <section id="test">
-        <div class="demo-section k-content wide">
-            <div id="stock-chart"></div>
+    <!--Analysis-->
+    <section class="container" id="analysis"> 
+        <div id="analysis-content-box">
+          <div id="analysis-content-box-inner" class="text-center">
+            <div id="analysis-heading">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="row">
+                    <div class="col-md-12">Price</div>
+                    <div class="col-md-12">1000</div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="row">
+                    <div class="col-md-12">Day Change</div>
+                    <div class="col-md-12">1.25%</div>
+                  </div>
+                </div>
+                <div class="col-md-4">Technical Indicators</div>
+                <div class="row">
+                  <div class="col-md-8">Bollinger Bands</div>
+                    <div class="col-md-4">BUY</div>
+                </div>
+              </div>
+            </div>
+            
+            <div id="chart">
+              <div class="demo-section k-content wide">
+                <div id="stock-chart"></div>
+              </div>
+            </div>
           </div>
+        </div>
     </section>
+
+
+   
 
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
