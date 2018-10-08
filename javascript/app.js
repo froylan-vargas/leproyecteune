@@ -1,24 +1,20 @@
 var currentCurrency = 'BTC';
 var apiUrl = 'https://proyecteapi.herokuapp.com';
-var startDate = moment(new Date(moment(new Date()).subtract(365, 'days').calendar())).format('YYYY-MM-DD');
-var endDate = moment(new Date()).format('YYYY-MM-DD');
 
 function createCryptoCurrencyDataCall() {
     return {
-        key: '10bea72252e19dee1862e3d5958bef73',
-        currency: currentCurrency,
-        start: startDate + 'T00:00:00Z',
-        end: endDate + 'T00:00:00Z'
+        searchTerm: currentCurrency
     }
 }
 
 function cryptoCurrencyCall() {
-    var currencyApiUrl = 'https://api.nomics.com/v1/exchange-rates/history';
+    var currencyApiUrl = `${apiUrl}/crypto`;
     var data = createCryptoCurrencyDataCall();
     ajaxCall(currencyApiUrl, data).then(cryptoCurrencyResponse);
 }
 
 function cryptoCurrencyResponse(historic) {
+    
     const prices = historic.map(elem => {
         return Math.trunc(elem.rate);
     });
@@ -33,6 +29,9 @@ function cryptoCurrencyResponse(historic) {
 }
 
 function createChart(historic) {
+    var startDate = moment(new Date(moment(new Date()).subtract(365, 'days').calendar())).format('YYYY-MM-DD');
+    var endDate = moment(new Date()).format('YYYY-MM-DD');
+
     $("#stock-chart").kendoStockChart({
         dataSource: {
             data: historic
