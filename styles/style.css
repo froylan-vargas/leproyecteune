@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Titillium+Web');
 
+*{
+    box-sizing: border-box;
+}
+
 .navbar {
     padding: 20px 0;
     transition: all .5s ease-in-out;
@@ -131,4 +135,35 @@ body {
 #info-content-box-inner {
     display: table-cell;
     vertical-align: middle;
+}
+
+#news{
+    height: 90%;
+    background-color: rgba(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+    margin: 80px 30px 0px 30px;
+    color:white;
+    font-weight: bolder;
+}
+
+#tweets{
+    height: 43%;
+    background-color: rgba(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+    margin: 80px 40px 3% 0px;
+    color:white;
+    font-weight: bolder;
+}
+
+#cryptoinfo{
+    height: 43%;
+    background-color: rgba(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+    margin: 10px 40px 0px 0px;
+    color:white;
+    font-weight: bolder;
+}
+
+#info-content-row{
+    height: 100%;
 }
