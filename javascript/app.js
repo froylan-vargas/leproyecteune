@@ -1,9 +1,9 @@
-var currentCurrency = 'BTC';
+var currentCurrency = {};
 var apiUrl = 'https://proyecteapi.herokuapp.com';
 
 function createCryptoCurrencyDataCall() {
     return {
-        searchTerm: currentCurrency
+        searchTerm: currentCurrency.shortName
     }
 }
 
@@ -14,21 +14,32 @@ function cryptoCurrencyCall() {
 }
 
 function cryptoCurrencyResponse(historic) {
-    
+
+    createPricesChart(historic);
+
     const prices = historic.map(elem => {
         return Math.trunc(elem.rate);
     });
 
-    $.when(getBollingerData(prices), getMacdData(prices), getMaData(prices)).done(function (bollingerResponse, macdResponse, maResponse) {
-        console.log('bollinger', bollingerResponse[0]);
-        console.log('macd', macdResponse[0]);
-        console.log('moving averages', maResponse[0]);
-    });
+    const bollingerData = getBollingerData(historic, prices);
+    console.log('bollingerData', bollingerData);
+    const maData = getMaData(historic, prices);
+    console.log('moving averages', maData);
 
-    createChart(historic);
+    //Call here ma and bollbands indicator results method. 
+
+
+    $.when(getMacdData(prices)).done(function (macdResponse) {
+
+        const macdData = getMacdObject(historic, macdResponse);
+        console.log('MACD', macdData);
+
+        //Call here the MACD indicator result
+
+    });
 }
 
-function createChart(historic) {
+function createPricesChart(historic) {
     var startDate = moment(new Date(moment(new Date()).subtract(365, 'days').calendar())).format('YYYY-MM-DD');
     var endDate = moment(new Date()).format('YYYY-MM-DD');
 
@@ -37,7 +48,7 @@ function createChart(historic) {
             data: historic
         },
         title: {
-            text: currentCurrency
+            text: currentCurrency.name
         },
         dateField: "timestamp",
         series: [{
@@ -67,16 +78,57 @@ function createChart(historic) {
     });
 }
 
-function getBollingerData(prices) {
-    var url = `${apiUrl}/bollinger`;
+function getBollingerData(historic, prices) {
 
-    var data = {
-        datum: JSON.stringify(prices),
-        size: 21,
-        times: 2
-    };
+    const takenDays = 21;
 
-    return ajaxCall(url, data);
+    const bollingerArray = prices.map((element, i) => {
+        if (i - takenDays >= 0) {
+            const avg = getAverage(prices.slice(i - takenDays, i));
+            const stdv = getStdv(prices.slice(i - takenDays, i));
+            const upperBand = avg + (2 * stdv);
+            const lowerBand = avg - (2 * stdv);
+            return {
+                timestamp: historic[i].timestamp,
+                price: element,
+                upperBand,
+                lowerBand
+            }
+        } else {
+            return {
+                timestamp: historic[i].timestamp,
+                price: element,
+                upperBand: 0,
+                lowerBand: 0
+            };
+        }
+    });
+
+    return bollingerArray;
+}
+
+function getMaData(historic, prices) {
+    const movingAveragesArray = prices.map((element, i) => {
+        if (i - 50 >= 0) {
+            const avg20 = getAverage(prices.slice(i - 20, i));
+            const avg50 = getAverage(prices.slice(i - 50, i));
+            return {
+                timestamp: historic[i].timestamp,
+                price: element,
+                avg20,
+                avg50
+            }
+        } else {
+            return {
+                timestamp: historic[i].timestamp,
+                price: element,
+                avg20: 0,
+                avg50: 0
+            };
+        }
+    });
+
+    return movingAveragesArray;
 }
 
 function getMacdData(prices) {
@@ -92,15 +144,44 @@ function getMacdData(prices) {
     return ajaxCall(url, data);
 }
 
-function getMaData(prices) {
-    var url = `${apiUrl}/ma`;
+function getMacdObject(historic, macd) {
+    const macdArray = historic.map((element, i) => {
+        return {
+            timestamp: element.timestamp,
+            price: element.rate,
+            macd: macd.MACD[i],
+            histogram: macd.histogram[i],
+            signal: macd.signal[i]
+        }
+    });
 
-    var data = {
-        data: JSON.stringify(prices),
-        size: 26
-    };
+    return macdArray;
+}
 
-    return ajaxCall(url, data);
+function cryptoChangeActions() {
+    displaySections();
+    twitterCall();
+    cryptoCurrencyCall();
+}
+
+function twitterCall() {
+    const twitterUrl = `${apiUrl}/tweets`;
+    const data = {
+        searchTerm: currentCurrency.name
+    }
+    ajaxCall(twitterUrl, data).then(twitterResponse);
+}
+
+function twitterResponse(response) {
+    const tweets = response.statuses;
+    const firstTweet = tweets.slice(0, 1)[0];
+    console.log("Twwet", firstTweet);
+    const finalTweetText = urlify (firstTweet.text);
+    $('#tweetText').html(finalTweetText);
+    $('#tweetUserPic').attr('src',firstTweet.user.profile_image_url_https);
+    $('#userUrl').attr('href', `https://twitter.com/@${firstTweet.user.screen_name}`)
+    $('#userUrl').attr('target', '_blank')
+    $('#tweetUser').text(`@${firstTweet.user.screen_name}`);
 }
 
 function ajaxCall(url, data) {
@@ -111,4 +192,37 @@ function ajaxCall(url, data) {
     })
 }
 
-cryptoCurrencyCall();
+function getStdv(data) {
+    return math.std(data);
+}
+
+function getAverage(data) {
+    return math.mean(data)
+}
+
+function urlify(text) {
+    var urlRegex = /(https?:\/\/[^\s]+)/g;
+    return text.replace(urlRegex, function(url) {
+        return '<a href="' + url + '">' + url + '</a>';
+    })
+}
+
+
+function displaySections() {
+    $('#learnButton').show();
+    $('#analysis').show();
+    $('#info').show();
+}
+
+//Handlers
+function onBitcoinHandler() {
+    currentCurrency = {
+        name: 'bitcoin',
+        shortName: 'BTC'
+    }
+    cryptoChangeActions();
+}
+
+//Bindings
+$(".dropdown-item[data-value='btc']").on('click', onBitcoinHandler);
+

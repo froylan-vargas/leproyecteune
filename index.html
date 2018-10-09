@@ -19,7 +19,7 @@
 
   <header>
     <nav class="navbar fixed-top navbar-expand-md navbar-dark ">
-      <span class="navbar-brand">Crypto Guru</span>
+      <a href="#home"><span href="#home" class="navbar-brand">Crypto Guru</span></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
         aria-expanded="false" aria-label="Toggle navigation">
 
@@ -29,17 +29,17 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link btn btn-lg" href="#">About Us</a>
+            <a class="nav-link btn" href="#">About Us</a>
           </li>
-          <div class="btn-group">
-            <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true"
-              aria-expanded="false">
-              Choose your crypto...
-            </button>
+          <div class="nav-item dropdown">
+            <a class="nav-link btn btn-general  btn-white dropdown-toggle" href="#" id="navbarDropdown" role="button"
+              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <span>Choose your crypto...</span>
+            </a>
             <div class="dropdown-menu">
-              <a class="dropdown-item" href="#">Bitcoin</a>
-              <a class="dropdown-item" href="#">Etherum</a>
-              <a class="dropdown-item" href="#">Litecoin</a>
+              <a class="dropdown-item" data-value="btc" href="#home">Bitcoin</a>
+              <a class="dropdown-item" data-value="eth" href="#home">Etherum</a>
+              <a class="dropdown-item" data-value="lite" href="#home">Litecoin</a>
             </div>
           </div>
       </div>
@@ -58,7 +58,8 @@
               <br>to learn how to invest in Cryptocurrencies</h3>
           </div>
           <div id="home-btn">
-            <button class="btn btn-general btn-white" type="button" role="button">LEARN HOW TO CRYPTO</button>
+            <a href="#info"><button id="learnButton" style="display:none" class="btn btn-general btn-white" type="button"
+                role="button">LEARN HOW TO CRYPTO</button></a>
           </div>
         </div>
       </div>
@@ -66,7 +67,7 @@
   </section>
 
   <!--Analysis-->
-  <section class="container" id="analysis">
+  <section style="display:none" class="container" id="analysis">
     <div id="analysis-content-box">
       <div id="analysis-content-box-inner" class="text-center">
         <div id="analysis-heading">
@@ -133,7 +134,7 @@
   </section>
 
   <!--Info -->
-  <section id="info">
+  <section style="display: none" id="info">
     <div id="info-cover">
       <div id="info-content-box">
         <div id="info-content-box-inner" class="text-center">
@@ -145,22 +146,21 @@
               </div>
             </div>
             <div class="col-md-8">
-              
-                
-                  <div class="row" id="tweets">
-                    <div  class="col-md-12">
-                      Tweets
-                      <!--Tweets-->
-                    </div>
-                  </div>
-                  <div class="row" id="cryptoinfo">
-                    <div  class="col-md-12">
-                      Crypto info
-                      <!--Crypto info -->
-                    </div>
-                  </div>
-                
-              
+              <div class="row" id="tweets">
+                <div class="col-md-12">
+                  Tweets
+                  <p id="tweetText"></p>
+                  <img id="tweetUserPic">
+                  <a id="userUrl"><span id="tweetUser"></span></a>
+                  <!--Tweets-->
+                </div>
+              </div>
+              <div class="row" id="cryptoinfo">
+                <div class="col-md-12">
+                  Crypto info
+                  <!--Crypto info -->
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -179,6 +179,7 @@
     crossorigin="anonymous"></script>
   <script src="javascript/kendo.all.min.js"></script>
   <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/5.2.0/math.min.js"></script>
   <script src="./javascript/app.js"></script>
 </body>
 
