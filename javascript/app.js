@@ -18,25 +18,74 @@ function cryptoCurrencyResponse(historic) {
     createPricesChart(historic);
 
     const prices = historic.map(elem => {
-        return Math.trunc(elem.rate);
+        return (Math.trunc(elem.rate));
     });
 
-    const bollingerData = getBollingerData(historic, prices);
-    console.log('bollingerData', bollingerData);
-    const maData = getMaData(historic, prices);
+    var bollingerData = getBollingerData(historic, prices);
+    bollingerData = bollingerData.reverse();
+    console.log('bollingerDataReverse', bollingerData.reverse());
+
+    //Si el precio de hoy es menor a upperBand de hoy && precio de ayer fue mayor a upperBand ======= VENTA!
+    //Si no .= entonces si el precio de hoy es mayor a la lowerband y el precio de ayer fue menor a la lowerBand ========= COMPRA!
+    // si no hay señal es HOLD
+
+    //BONUS dejar señal de compra y venta si los ultimos 3 días es HOLD.  
+
+    var bollingerSignal = "";
+    if (bollingerData[0].price < bollingerData[0].upperBand && bollingerData[1].price > bollingerData[1].upperBand) {
+        bollingerSignal = "SELL";
+    } else if (bollingerData[0].price > bollingerData[0].lowerBand && bollingerData[1].price < bollingerData[1].lowerBand) {
+        bollingerSignal = "BUY";
+    } else {
+        bollingerSignal = "HOLD";
+    }
+
+    console.log(bollingerSignal);
+
+
+
+    const maData = getMaData(historic, prices).reverse();
     console.log('moving averages', maData);
 
-    //Call here ma and bollbands indicator results method. 
+
+    /* 
+        if today avg20 < today avg50 && yest avg20 > yest avg 50 ========= SELL
+        else if today avg20 > today avg50 && yest avg20 < yest avg 50 ======== BUY
+        else HOLD
+
+        TO DO: BONUS
+    */
+    var movingAveragesSignal = "";
+    if (maData[0].avg20 < maData[0].avg50 && maData[1].avg20 > maData[1].avg50) {
+        movingAveragesSignal = "SELL";
+    } else if (maData[0].avg20 > maData[0].avg50 && maData[1].avg20 < maData[1].avg50) {
+        movingAveragesSignal = "BUY";
+    } else {
+        movingAveragesSignal = "HOLD";
+    }
+
+    console.log('ma signal', movingAveragesSignal);
 
 
-    $.when(getMacdData(prices)).done(function (macdResponse) {
+    const rsiData = getMacdData(historic, prices).reverse();
+    console.log('rsi', rsiData);
 
-        const macdData = getMacdObject(historic, macdResponse);
-        console.log('MACD', macdData);
+    /* If rsi > 70 ======= SELL
+     else if < 40 ======== BUY
+     else HOLD
+    */
 
-        //Call here the MACD indicator result
+    var rsiSignal = "";
+    if (rsiData[0] > 70) {
+        rsiSignal = "SELL";
+    } else if (rsiData[0] < 40) {
+        rsiSignal = "BUY";
+    } else {
+        rsiSignal = "HOLD";
+    }
 
-    });
+    console.log(rsiSignal);
+
 }
 
 function createPricesChart(historic) {
@@ -98,8 +147,8 @@ function getBollingerData(historic, prices) {
             return {
                 timestamp: historic[i].timestamp,
                 price: element,
-                upperBand: 0,
-                lowerBand: 0
+                upperBand: null,
+                lowerBand: null
             };
         }
     });
@@ -122,8 +171,8 @@ function getMaData(historic, prices) {
             return {
                 timestamp: historic[i].timestamp,
                 price: element,
-                avg20: 0,
-                avg50: 0
+                avg20: null,
+                avg50: null
             };
         }
     });
@@ -131,17 +180,39 @@ function getMaData(historic, prices) {
     return movingAveragesArray;
 }
 
-function getMacdData(prices) {
-    var url = `${apiUrl}/macd`;
+function getMacdData(historic, prices) {
+    const takenDays = 21;
 
-    var data = {
-        data: JSON.stringify(prices),
-        slowPeriods: 26,
-        fastPeriods: 12,
-        signalPeriods: 9
-    };
+    var returnArray = prices.map((elem, i) => {
+        if (i === 0) {
+            return null;
+        } else {
+            return (prices[i] / prices[i + 1]) - 1
+        }
+    });
 
-    return ajaxCall(url, data);
+    var positiveArray = returnArray.map(elem => {
+        return elem > 0 ? 1 : 0;
+    });
+
+
+
+    var rsiArray = positiveArray.map((elem, i) => {
+        if (i - takenDays >= 0) {
+            return {
+                timestamp: historic[i].timestamp,
+                price: historic[i].rate,
+                rsi: (getAverage(positiveArray.slice(i - takenDays, i))) * 100
+            }
+        } else {
+            return null;
+        }
+
+    });
+
+
+    return rsiArray;
+
 }
 
 function getMacdObject(historic, macd) {
@@ -176,9 +247,9 @@ function twitterResponse(response) {
     const tweets = response.statuses;
     const firstTweet = tweets.slice(0, 1)[0];
     console.log("Twwet", firstTweet);
-    const finalTweetText = urlify (firstTweet.text);
+    const finalTweetText = urlify(firstTweet.text);
     $('#tweetText').html(finalTweetText);
-    $('#tweetUserPic').attr('src',firstTweet.user.profile_image_url_https);
+    $('#tweetUserPic').attr('src', firstTweet.user.profile_image_url_https);
     $('#userUrl').attr('href', `https://twitter.com/@${firstTweet.user.screen_name}`)
     $('#userUrl').attr('target', '_blank')
     $('#tweetUser').text(`@${firstTweet.user.screen_name}`);
@@ -192,17 +263,17 @@ function ajaxCall(url, data) {
     })
 }
 
-function getStdv(data) {
-    return math.std(data);
+function getStdv(array) {
+    return math.std(array);
 }
 
-function getAverage(data) {
-    return math.mean(data)
+function getAverage(array) {
+    return math.mean(array)
 }
 
 function urlify(text) {
     var urlRegex = /(https?:\/\/[^\s]+)/g;
-    return text.replace(urlRegex, function(url) {
+    return text.replace(urlRegex, function (url) {
         return '<a href="' + url + '">' + url + '</a>';
     })
 }
@@ -218,11 +289,11 @@ function displaySections() {
 function onBitcoinHandler() {
     currentCurrency = {
         name: 'bitcoin',
-        shortName: 'BTC'
+        shortName: 'XRP'
     }
     cryptoChangeActions();
 }
 
 //Bindings
-$(".dropdown-item[data-value='btc']").on('click', onBitcoinHandler);
+$(".dropdown-item[data-value='BTC']").on('click', onBitcoinHandler);
 
