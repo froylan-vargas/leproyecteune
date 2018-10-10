@@ -67,7 +67,7 @@ function cryptoCurrencyResponse(historic) {
     console.log('ma signal', movingAveragesSignal);
 
 
-    const rsiData = getMacdData(historic, prices).reverse();
+    const rsiData = getRisData(historic, prices).reverse();
     console.log('rsi', rsiData);
 
     /* If rsi > 70 ======= SELL
@@ -176,11 +176,10 @@ function getMaData(historic, prices) {
             };
         }
     });
-
     return movingAveragesArray;
 }
 
-function getMacdData(historic, prices) {
+function getRisData(historic, prices) {
     const takenDays = 21;
 
     var returnArray = prices.map((elem, i) => {
@@ -195,8 +194,6 @@ function getMacdData(historic, prices) {
         return elem > 0 ? 1 : 0;
     });
 
-
-
     var rsiArray = positiveArray.map((elem, i) => {
         if (i - takenDays >= 0) {
             return {
@@ -207,32 +204,42 @@ function getMacdData(historic, prices) {
         } else {
             return null;
         }
-
     });
-
-
     return rsiArray;
 
 }
 
-function getMacdObject(historic, macd) {
-    const macdArray = historic.map((element, i) => {
-        return {
-            timestamp: element.timestamp,
-            price: element.rate,
-            macd: macd.MACD[i],
-            histogram: macd.histogram[i],
-            signal: macd.signal[i]
-        }
-    });
-
-    return macdArray;
-}
-
 function cryptoChangeActions() {
     displaySections();
-    twitterCall();
     cryptoCurrencyCall();
+    twitterCall();
+    newsCall();
+}
+
+function newsCall() {
+    var currentDate = moment(new Date()).format('L');
+    var url = 'https://newsapi.org/v2/everything';
+    var data = {
+        q: currentCurrency.name,
+        from: currentDate,
+        to: currentDate,
+        sortBy: 'popularity',
+        pageSize: 10,
+        apiKey: '590ee702b8964b46a1b9a8e181518171'
+    }
+    ajaxCall(url, data).then(function (news) {
+        news.articles.forEach(article => {
+            var newsComponent = $('<div>').addClass('col-12 newsComponent');
+            var title = $('<span>').text(article.title);
+            var publishedAt = $('<span>').text(article.publishedAt);
+            var newsImage = $('<img>').attr('src', article.urlToImage).addClass("newsImage");
+            var newsLink = $('<a>').attr('href', article.url);
+            newsLink.attr('target', '_blank');
+            newsLink.append(newsImage);
+            newsComponent.append(newsLink, '<br>', title, publishedAt);
+            $('#newsContainer').append(newsComponent);
+        });
+    })
 }
 
 function twitterCall() {
@@ -245,14 +252,20 @@ function twitterCall() {
 
 function twitterResponse(response) {
     const tweets = response.statuses;
-    const firstTweet = tweets.slice(0, 1)[0];
-    console.log("Twwet", firstTweet);
-    const finalTweetText = urlify(firstTweet.text);
-    $('#tweetText').html(finalTweetText);
-    $('#tweetUserPic').attr('src', firstTweet.user.profile_image_url_https);
-    $('#userUrl').attr('href', `https://twitter.com/@${firstTweet.user.screen_name}`)
-    $('#userUrl').attr('target', '_blank')
-    $('#tweetUser').text(`@${firstTweet.user.screen_name}`);
+    tweets.forEach(tweet => {
+        var tweetFinalText = urlify(tweet.text);
+        var tweetComponent = $('<div>').addClass('col-6 col-md-4 tweetComponent');
+        var userImg = $('<img>').attr('src', tweet.user.profile_image_url_https);
+        var userLink = $('<a>').attr('href', `https://twitter.com/@${tweet.user.screen_name}`);
+        userLink.attr('target', '_blank');
+        var twitterName = $('<p>').text(`@${tweet.user.screen_name}`);
+        userLink.append(twitterName);
+        var tweetTextContainer = $('<div>').addClass('tweetText');
+        var tweetText = $('<p>').html(tweetFinalText);
+        tweetTextContainer.append(tweetText);
+        tweetComponent.append(userImg, userLink, tweetTextContainer);
+        $('#tweetsContainer').append(tweetComponent);
+    });
 }
 
 function ajaxCall(url, data) {
@@ -289,11 +302,29 @@ function displaySections() {
 function onBitcoinHandler() {
     currentCurrency = {
         name: 'bitcoin',
-        shortName: 'XRP'
+        shortName: 'BTC'
+    }
+    cryptoChangeActions();
+}
+
+function onEtherumHandler() {
+    currentCurrency = {
+        name: 'etherum',
+        shortName: 'ETH'
+    }
+    cryptoChangeActions();
+}
+
+function onLitecoinHandler() {
+    currentCurrency = {
+        name: 'litecoin',
+        shortName: 'LTC'
     }
     cryptoChangeActions();
 }
 
 //Bindings
 $(".dropdown-item[data-value='BTC']").on('click', onBitcoinHandler);
+$(".dropdown-item[data-value='ETH']").on('click', onEtherumHandler);
+$(".dropdown-item[data-value='LTC']").on('click', onLitecoinHandler);
 
