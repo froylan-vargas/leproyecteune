@@ -21,16 +21,47 @@ function cryptoCurrencyResponse(historic) {
         return (Math.trunc(elem.rate));
     });
 
-    var bollingerData = getBollingerData(historic, prices);
-    bollingerData = bollingerData.reverse();
-    console.log('bollingerDataReverse', bollingerData.reverse());
+    var currentPrice = parseFloat(historic[historic.length - 1].rate);
+    var yesterdayPrice = parseFloat(historic[historic.length - 2].rate);
 
-    //Si el precio de hoy es menor a upperBand de hoy && precio de ayer fue mayor a upperBand ======= VENTA!
-    //Si no .= entonces si el precio de hoy es mayor a la lowerband y el precio de ayer fue menor a la lowerBand ========= COMPRA!
-    // si no hay señal es HOLD
+    var changePercentage = ((currentPrice - yesterdayPrice) / yesterdayPrice).toFixed(3);
 
-    //BONUS dejar señal de compra y venta si los ultimos 3 días es HOLD.  
+    $("#todayPrice").text(currentPrice.toFixed(2));
+    $("#percentagePrice").text(changePercentage + '%');
 
+    changePercentage > 0 ?
+        $("#percentagePrice").attr('style', 'color:green') :
+        $("#percentagePrice").attr('style', 'color:red');
+
+    const bollingerSignal = getBollingerSignal(historic, prices);
+    const movingAveragesSignal = getMovingAveragesSignal(historic, prices);
+    const rsiSignal = getRisSignal(historic, prices);
+
+    displaySignals('bb', bollingerSignal);
+    displaySignals('ma', movingAveragesSignal);
+    displaySignals('rsi', rsiSignal);
+}
+
+function displaySignals(shortIndicator, signal) {
+    var indicator = $(`#${shortIndicator}Signal`);
+    indicator.text(signal);
+    $(`#${shortIndicator}Img`).attr('src', `./IMAGES/${signal.toLowerCase()}.png`);
+
+    switch (signal.toLowerCase()) {
+        case 'sell':
+            indicator.addClass("sellSignal");
+            break;
+        case 'buy':
+            indicator.addClass("buySignal");
+            break;
+        case 'hold':
+            indicator.addClass("holdSignal");
+            break;
+    }
+}
+
+function getBollingerSignal(historic, prices) {
+    const bollingerData = getBollingerData(historic, prices).reverse();
     var bollingerSignal = "";
     if (bollingerData[0].price < bollingerData[0].upperBand && bollingerData[1].price > bollingerData[1].upperBand) {
         bollingerSignal = "SELL";
@@ -40,21 +71,11 @@ function cryptoCurrencyResponse(historic) {
         bollingerSignal = "HOLD";
     }
 
-    console.log(bollingerSignal);
+    return bollingerSignal;
+}
 
-
-
+function getMovingAveragesSignal(historic, prices) {
     const maData = getMaData(historic, prices).reverse();
-    console.log('moving averages', maData);
-
-
-    /* 
-        if today avg20 < today avg50 && yest avg20 > yest avg 50 ========= SELL
-        else if today avg20 > today avg50 && yest avg20 < yest avg 50 ======== BUY
-        else HOLD
-
-        TO DO: BONUS
-    */
     var movingAveragesSignal = "";
     if (maData[0].avg20 < maData[0].avg50 && maData[1].avg20 > maData[1].avg50) {
         movingAveragesSignal = "SELL";
@@ -64,17 +85,11 @@ function cryptoCurrencyResponse(historic) {
         movingAveragesSignal = "HOLD";
     }
 
-    console.log('ma signal', movingAveragesSignal);
+    return movingAveragesSignal;
+}
 
-
+function getRisSignal(historic, prices) {
     const rsiData = getRisData(historic, prices).reverse();
-    console.log('rsi', rsiData);
-
-    /* If rsi > 70 ======= SELL
-     else if < 40 ======== BUY
-     else HOLD
-    */
-
     var rsiSignal = "";
     if (rsiData[0] > 70) {
         rsiSignal = "SELL";
@@ -83,10 +98,9 @@ function cryptoCurrencyResponse(historic) {
     } else {
         rsiSignal = "HOLD";
     }
-
-    console.log(rsiSignal);
-
+    return rsiSignal;
 }
+
 
 function createPricesChart(historic) {
     var startDate = moment(new Date(moment(new Date()).subtract(365, 'days').calendar())).format('YYYY-MM-DD');
@@ -97,7 +111,7 @@ function createPricesChart(historic) {
             data: historic
         },
         title: {
-            text: currentCurrency.name
+            text: currentCurrency.name.toUpperCase()
         },
         dateField: "timestamp",
         series: [{
@@ -128,9 +142,7 @@ function createPricesChart(historic) {
 }
 
 function getBollingerData(historic, prices) {
-
     const takenDays = 21;
-
     const bollingerArray = prices.map((element, i) => {
         if (i - takenDays >= 0) {
             const avg = getAverage(prices.slice(i - takenDays, i));
@@ -152,7 +164,6 @@ function getBollingerData(historic, prices) {
             };
         }
     });
-
     return bollingerArray;
 }
 
@@ -181,7 +192,6 @@ function getMaData(historic, prices) {
 
 function getRisData(historic, prices) {
     const takenDays = 21;
-
     var returnArray = prices.map((elem, i) => {
         if (i === 0) {
             return null;
@@ -189,11 +199,9 @@ function getRisData(historic, prices) {
             return (prices[i] / prices[i + 1]) - 1
         }
     });
-
     var positiveArray = returnArray.map(elem => {
         return elem > 0 ? 1 : 0;
     });
-
     var rsiArray = positiveArray.map((elem, i) => {
         if (i - takenDays >= 0) {
             return {
@@ -206,7 +214,6 @@ function getRisData(historic, prices) {
         }
     });
     return rsiArray;
-
 }
 
 function cryptoChangeActions() {
@@ -214,6 +221,31 @@ function cryptoChangeActions() {
     cryptoCurrencyCall();
     twitterCall();
     newsCall();
+
+    $.when(twitterCall(), newsCall()).done(function (twitterResponse, newsResponse) {
+        twitterCallback(twitterResponse[0]);
+        newsCallBack(newsResponse[0]);
+        startCarrousel();
+    });
+}
+
+function startCarrousel(){
+    $('.owl-carousel').owlCarousel({
+        loop: true,
+        margin: 10,
+        nav: true,
+        responsive: {
+            0: {
+                items: 1
+            },
+            600: {
+                items: 1
+            },
+            1000: {
+                items: 1
+            }
+        }
+    });
 }
 
 function newsCall() {
@@ -227,19 +259,7 @@ function newsCall() {
         pageSize: 10,
         apiKey: '590ee702b8964b46a1b9a8e181518171'
     }
-    ajaxCall(url, data).then(function (news) {
-        news.articles.forEach(article => {
-            var newsComponent = $('<div>').addClass('col-12 newsComponent');
-            var title = $('<span>').text(article.title);
-            var publishedAt = $('<span>').text(article.publishedAt);
-            var newsImage = $('<img>').attr('src', article.urlToImage).addClass("newsImage");
-            var newsLink = $('<a>').attr('href', article.url);
-            newsLink.attr('target', '_blank');
-            newsLink.append(newsImage);
-            newsComponent.append(newsLink, '<br>', title, publishedAt);
-            $('#newsContainer').append(newsComponent);
-        });
-    })
+    return ajaxCall(url, data);
 }
 
 function twitterCall() {
@@ -247,23 +267,59 @@ function twitterCall() {
     const data = {
         searchTerm: currentCurrency.name
     }
-    ajaxCall(twitterUrl, data).then(twitterResponse);
+    return ajaxCall(twitterUrl, data);
 }
 
-function twitterResponse(response) {
+function newsCallBack(news){
+    news.articles.forEach(article => {
+        var finalDate = moment(new Date(article.publishedAt)).format('L');
+        var newsComponent = $('<div>').addClass('col-12 col-sm-6 col-md-4 col-lg-4 newsComponent');
+        var newsHeaderRow = $('<div class="row mb-2">');
+        var newsHeaderColumn1 = $('<div class="p-0 col-2">');
+        var newsHeaderColumn2 = $('<div class="text-left p-0 col-10">');
+        newsHeaderRow.append(newsHeaderColumn1);
+        newsHeaderRow.append(newsHeaderColumn2);
+        var title = $('<span>').text(article.title);
+        var publishedText = $('<p class="m-0">').text('Published Date');
+        var publishedAt = $('<p class="m-0">').text(finalDate);
+        var newsImage = $('<img>').attr('src', article.urlToImage).addClass("newsImage");
+        var newsLink = $('<a>').attr('href', article.url);
+        newsLink.attr('target', '_blank');
+        newsLink.append(newsImage);
+        newsHeaderColumn1.append(newsLink);
+        newsHeaderColumn2.append(publishedText, publishedAt);
+        var columnContainer = $('<div class="columnContainer text-left">');
+        columnContainer.append(newsHeaderRow, title)
+        newsComponent.append(columnContainer);
+        $('#newsContainer').append(newsComponent);
+    });
+}
+
+function twitterCallback(response) {
     const tweets = response.statuses;
+
     tweets.forEach(tweet => {
         var tweetFinalText = urlify(tweet.text);
-        var tweetComponent = $('<div>').addClass('col-6 col-md-4 tweetComponent');
+        var tweetComponent = $('<div>').addClass('col-12 col-sm-6 col-md-4 tweetComponent');
         var userImg = $('<img>').attr('src', tweet.user.profile_image_url_https);
+        userImg.addClass('tweetImage');
         var userLink = $('<a>').attr('href', `https://twitter.com/@${tweet.user.screen_name}`);
         userLink.attr('target', '_blank');
-        var twitterName = $('<p>').text(`@${tweet.user.screen_name}`);
+        var twitterName = $('<span>').text(`@${tweet.user.screen_name}`);
         userLink.append(twitterName);
-        var tweetTextContainer = $('<div>').addClass('tweetText');
+        var tweetHeaderRow = $('<div class="row">')
+        var tweetHeaderCol1 = $('<div class="col-2 p-0">');
+        var tweetHeaderCol2 = $('<div class="col-10 p-0 text-left tweetHeaderName">')
+        tweetHeaderRow.append(tweetHeaderCol1, tweetHeaderCol2);;
+        tweetHeaderCol1.append(userImg);
+        tweetHeaderCol2.append(userLink);
+        var tweetTextContainer = $('<div class="text-left">').addClass('tweetText');
         var tweetText = $('<p>').html(tweetFinalText);
         tweetTextContainer.append(tweetText);
-        tweetComponent.append(userImg, userLink, tweetTextContainer);
+        var columnContainer = $('<div class="columnContainer">');
+        columnContainer.append(tweetHeaderRow, tweetTextContainer);
+        tweetComponent.append(columnContainer);
+
         $('#tweetsContainer').append(tweetComponent);
     });
 }
@@ -295,7 +351,10 @@ function urlify(text) {
 function displaySections() {
     $('#learnButton').show();
     $('#analysis').show();
+    $('#indicators').show();
     $('#info').show();
+    $('#tweetsContainer').empty();
+    $('#newsContainer').empty();
 }
 
 //Handlers
@@ -309,16 +368,8 @@ function onBitcoinHandler() {
 
 function onEtherumHandler() {
     currentCurrency = {
-        name: 'etherum',
+        name: 'ethereum',
         shortName: 'ETH'
-    }
-    cryptoChangeActions();
-}
-
-function onLitecoinHandler() {
-    currentCurrency = {
-        name: 'litecoin',
-        shortName: 'LTC'
     }
     cryptoChangeActions();
 }
@@ -326,5 +377,9 @@ function onLitecoinHandler() {
 //Bindings
 $(".dropdown-item[data-value='BTC']").on('click', onBitcoinHandler);
 $(".dropdown-item[data-value='ETH']").on('click', onEtherumHandler);
-$(".dropdown-item[data-value='LTC']").on('click', onLitecoinHandler);
+
+
+$(window).on("resize", function () {
+    kendo.resize($(".k-chart"));
+});
 

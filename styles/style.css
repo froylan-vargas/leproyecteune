@@ -14,6 +14,20 @@ body {
     margin-right: 0px !important;
 }
 
+.content-title-underline {
+    width: 30px;
+    height: 3px;
+    background-color: #34c6d3;
+    margin: 0 auto 30px auto;
+}
+
+.content-title-left{
+     width: 30px;
+    height: 3px;
+    background-color: #34c6d3;
+    margin: 0 auto 30px 60px;
+}
+
 /*Navbar*/
 .navbar {
     padding: 20px 0;
@@ -48,6 +62,7 @@ body {
 
 .dropdown-item, .dropdown-menu{
     background-color: rgba(0, 0, 0, 0.4) !important;
+    color: white !important;
 }
 
 .dropdown-menu{
@@ -81,8 +96,8 @@ body {
 
 #home-heading h3 {
     color: #fff;
-    font-size: 50px;
-    font-weight: 700;
+    font-size: 45px;
+    font-weight: 500;
     margin: 20px 2px 20px 2px;
     font-family: 'Titillium Web', sans-serif;
 }
@@ -92,7 +107,7 @@ body {
     border-width: 2px;
     border-radius: 0;
     padding: 12px 26px 12px 26px;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 400;
     text-transform: uppercase;
 }
@@ -101,21 +116,14 @@ body {
     border : 1px solid white;
     color: white;
 }
+
 /*Analysis section*/
-
-#analysis {
-    height: 100%;
-}
-
 #analysis-content-box {
     width: 100%;
-    height: 100%;
-    display: table;
 }
 
 #analysis-content-box-inner {
-    display: table-cell;
-    vertical-align: middle;
+    padding: 50px;
 }
 
 #analysis-heading h3 {
@@ -126,104 +134,125 @@ body {
     font-family: 'Titillium Web', sans-serif;
 }
 
-/*info section*/
-
-#info {
-    height: 100%;
+/*Indicators section*/
+#indicators-content-box {
+    width: 100%;
 }
 
-#info-cover {
-    height: 100%;
-    
+.imgIndicators{
+    height: 200px;
+    width: 200px;
+}
+
+#indicators{
+    padding: 20px;
+    margin: 20px;
+    border: 4px solid #34c6d3;
+    border-radius: 20px;
+}
+
+.holdSignal{
+    color: blue;
+}
+
+.sellSignal{
+    color: red;
+}
+
+.buySignal{
+    color: green;
+}
+
+.indImage{
+    height: 200px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+/*info section*/
+#info-content-box {
+    width: 100%;   
 }
 
 #newsContainer{
-    height: calc(100% - 100px); 
+    overflow-y: scroll;
+    height: 430px; 
 }
 
-#news{
-    height: 95%;
-    max-height: 95%;
-    background-color: rgba(0, 0, 0);
-    background-color: rgba(0, 0, 0, 0.4);
-    color:white;
-    font-weight: bolder;
-    overflow: auto;
+#tweetsContainer{
+    overflow-y: scroll;
+    height: 430px;
 }
 
-#newsColumn{
-    height: 100%;
-    padding-top:5%;
+.tweetImage{
+    height: 50px;
+    width: 50px !important;
 }
 
-#info-content-box {
-    width: 100%;
-    height: 100%;
+.componentTitle{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-#tweets{
-    height: 43%;
-    margin: 80px 40px 3% 0px;
-    color:black;
-    font-weight: bolder;
-    overflow: auto;
+.tweetsTitle{
+   height: 50px !important;
+   width: 50px !important;
+   margin: auto !important;
 }
 
 .tweetComponent{
-    
-    padding: 0px 5px !important;
-    overflow: auto;
+    padding: 5px !important;
 }
 
 .newsComponent{
-    background-color: rgba(255, 255, 255);
-    background-color: rgba(255, 255, 255, 0.1);
-    padding: 0px 5px !important;
-    margin-bottom: 10px;
+    padding: 5px !important;
 }
 
-.tweetText{
-    max-height: 120px;
-    min-height: 120px;
-}
-
-#cryptoinfo{
-    height: 30%;
-    background-color: rgba(0, 0, 0);
-    background-color: rgba(0, 0, 0, 0.4);
-    margin: 10px 40px 0px 0px;
-    color:white;
-    font-weight: bolder;
-}
-
-#info-content-row{
+.columnContainer{
+    background-color: whitesmoke;
+    width: 100%;
     height: 100%;
+    padding: 15px !important;
+    border-radius: 20px;
+}
+
+.tweetHeaderName{
+    margin: auto 0;
+}
+
+#cryptoInfoContainer{
+    height: 430px;
+    background: aqua;
+    padding-top: 20px;
 }
 
 .newsImage {
-    width: 50%;
-    height: 100px;
+    width: 50px !important;
+    height: 50px !important;
 }
+
 /*About section*/
 #about {
     margin-top: 30px;
+    margin-bottom: 30px;
 }
 .imgAbout {
  width: 100%;
 }
 
 .descriptionContainer {
-    padding: 0px 100px !important;
+    padding: 0px 20px !important;
 }
 .description {
     background-color:whitesmoke;
     color:black;
-    height:576px ;
+    height:300px;
     display: table-cell;
     vertical-align: middle;
-    padding: 0px 60px;
+    padding: 0px 30px;
 }
 
 .imgDescription {
-    vertical-align: middle;
+    margin: auto 0 !important;
 }
