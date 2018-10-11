@@ -134,10 +134,7 @@ body {
 
 #info-cover {
     height: 100%;
-    background-image: url("../IMAGES/image3.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
+    
 }
 
 #newsContainer{
@@ -166,17 +163,14 @@ body {
 
 #tweets{
     height: 43%;
-    background-color: rgba(0, 0, 0);
-    background-color: rgba(0, 0, 0, 0.4);
     margin: 80px 40px 3% 0px;
-    color:white;
+    color:black;
     font-weight: bolder;
     overflow: auto;
 }
 
 .tweetComponent{
-    background-color: rgba(255, 255, 255);
-    background-color: rgba(255, 255, 255, 0.1);
+    
     padding: 0px 5px !important;
     overflow: auto;
 }
@@ -209,4 +203,27 @@ body {
 .newsImage {
     width: 50%;
     height: 100px;
+}
+/*About section*/
+#about {
+    margin-top: 30px;
+}
+.imgAbout {
+ width: 100%;
+}
+
+.descriptionContainer {
+    padding: 0px 100px !important;
+}
+.description {
+    background-color:whitesmoke;
+    color:black;
+    height:576px ;
+    display: table-cell;
+    vertical-align: middle;
+    padding: 0px 60px;
+}
+
+.imgDescription {
+    vertical-align: middle;
 }
