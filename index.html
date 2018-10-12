@@ -11,198 +11,194 @@
   <link rel="stylesheet" href="./styles/style.css" />
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
     crossorigin="anonymous">
+  <link rel="stylesheet" href="./styles/owl.carousel.min.css">
+  <link rel="stylesheet" href="./styles/owl.theme.default.min.css">
 </head>
 
-<body data-spy="scroll" data-target=".navbar" data-offset="65">
+<header>
+  <nav class="navbar fixed-top navbar-expand-md navbar-dark ">
+    <a href="#home"><span href="#home" class="navbar-brand">Crypto Guru</span></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
+      aria-expanded="false" aria-label="Toggle navigation">
 
+      <span class="navbar-toggler-icon"></span>
 
-
-  <header>
-    <nav class="navbar fixed-top navbar-expand-md navbar-dark ">
-      <a href="#home"><span href="#home" class="navbar-brand">Crypto Guru</span></a>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav"
-        aria-expanded="false" aria-label="Toggle navigation">
-
-        <span class="navbar-toggler-icon"></span>
-
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link btn" href="#about">About Us</a>
-          </li>
-          <div class="nav-item dropdown">
-            <a class="nav-link btn btn-general  btn-white dropdown-toggle" href="#" id="navbarDropdown" role="button"
-              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <span>Choose your crypto...</span>
-            </a>
-            <div class="dropdown-menu">
-              <a class="dropdown-item" data-value="BTC" href="#home">Bitcoin</a>
-              <a class="dropdown-item" data-value="ETH" href="#home">Etherum</a>
-              <a class="dropdown-item" data-value="LTC" href="#home">Litecoin</a>
-            </div>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link btn" href="#about">About Us</a>
+        </li>
+        <div class="nav-item dropdown">
+          <a class="nav-link btn btn-general  btn-white dropdown-toggle" href="#" id="navbarDropdown" role="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span>Choose your crypto...</span>
+          </a>
+          <div class="dropdown-menu">
+            <a class="dropdown-item" data-value="BTC" href="#home">Bitcoin</a>
+            <a class="dropdown-item" data-value="ETH" href="#home">Ethereum</a>
           </div>
-      </div>
-      </ul>
-      </div>
-    </nav>
-  </header>
+        </div>
+    </div>
+    </ul>
+    </div>
+  </nav>
+</header>
 
-  <!--Home-->
-  <section id="home">
-    <div id="home-cover">
-      <div id="home-content-box">
-        <div id="home-content-box-inner" class="text-center">
-          <div id="home-heading">
-            <h3>The easiest and safest way
-              <br>to learn how to invest in Cryptocurrencies</h3>
-          </div>
-          <div id="home-btn">
-            <a href="#info"><button id="learnButton" style="display:none" class="btn btn-general btn-white" type="button"
-                role="button">LEARN HOW TO CRYPTO</button></a>
-          </div>
+<!--Home-->
+<section id="home">
+  <div id="home-cover">
+    <div id="home-content-box">
+      <div id="home-content-box-inner" class="text-center">
+        <div id="home-heading">
+          <h3>The easiest and safest way
+            <br>to learn how to invest in Cryptocurrencies</h3>
+        </div>
+        <div id="home-btn">
+          <a href="#info"><button id="learnButton" style="display:none" class="btn btn-general btn-white" type="button"
+              role="button">LEARN HOW TO CRYPTO</button></a>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!--Analysis-->
-  <section style="display:none" class="container" id="analysis">
-    <div id="analysis-content-box">
-      <div id="analysis-content-box-inner" class="text-center">
-        <div id="analysis-heading">
+<!--Analysis-->
+<section style="display:none" id="analysis">
+  <div id="analysis-content-box">
+    <div id="analysis-content-box-inner" class="text-center">
+      <h3>Financial info</h3>
+      <div class="content-title-underline"></div>
+      <div class="row">
+        <div class="col-6">
           <div class="row">
-            <div class="col-md-4">
-              <div class="row">
-                <div class="col-md-12">Price</div>
-                <div class="col-md-12">1000</div>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="row">
-                <div class="col-md-12">Day Change</div>
-                <div class="col-md-12">1.25%</div>
-              </div>
-            </div>
-            <div class="col-md-4 text-left">
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="row">
-                    <div class="col-md-8">
-                      Bollinger Bands
-                    </div>
-                    <div class="col-md-4">
-                      Buy
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="row">
-                        <div class="col-md-8">
-                          MACD
-                        </div>
-                        <div class="col-md-4">
-                          Hold
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="row">
-                        <div class="col-md-8">
-                          Moving Averages
-                        </div>
-                        <div class="col-md-4">
-                          Sell
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <div class="col-md-12">Today price</div>
+            <div class="col-md-12"><span id="todayPrice"></span></div>
           </div>
         </div>
-        <div id="chart">
-          <div class="demo-section k-content wide">
-            <div id="stock-chart"></div>
+        <div class="col-6">
+          <div class="row">
+            <div class="col-md-12">Day change</div>
+            <div class="col-md-12"><span id="percentagePrice"></span></div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!--Info -->
-  <section style="display: none" id="info">
-    <div id="info-cover">
-      <div id="info-content-box" class="text-center">
-          <div class="row" id="info-content-row">
-            <div class="col-md-4" id="newsColumn">
-              <div id="news">
-                News
-                <div id="newsContainer" class="row">
-                </div>
-              </div>
-            </div>
-            <div class="col-md-8">
-              <div class="row" id=tweets>
-                <div class="col-md-12">
-                  Tweets
-                  <div id="tweetsContainer" class="row">
-                  </div>
-                </div>
-              </div>
-              <div class="row" id="cryptoinfo">
-                <div class="col-md-12">
-                  Crypto info
-                  <div id="cryptoInfoContainer" class="row">
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+      <div id="chart">
+        <div class="k-content wide">
+          <div id="stock-chart" data-role="stockchart" style="position: relative;" class="k-chart k-stockchart"></div>
+        </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-    <!--About US -->
-    <section id="about">
-        <div id="about-content-box">
-            <div id="about-heading">
-              <div class="row"> 
-              <div class="col-8 descriptionContainer">
-                    <div class="description">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam magnam porro dicta eligendi provident molestias, voluptatum sed similique, quibusdam exercitationem debitis consectetur? Impedit culpa eaque, tenetur magnam excepturi rem repellendus!
-                      </div>
-              
-
-              </div>
-              <div class="col-4 imgDescription">
-                      <img src="./IMAGES/image4.jpg" class="imgAbout" alt="">
-
-                  </div>
-
-
-              </div>
-
-            </div>
+<!--Indicators-->
+<section style="display:none" id="indicators">
+  <div id="indicators-content-box" class="text-center">
+    <h3>Indicators</h3>
+    <div class="content-title-underline"></div>
+    <div class="row">
+      <div class="col-12 col-sm-6 col-md-4 col-lg-4">
+        <div class="mb-2">
+            <span>Bollinger Bands: </span> <span id="bbSignal"></span>
+        </div>
+          <img id="bbImg" class="imgIndicators mb-4 mb-sm-4">
+      </div>
+      <div class="col-12 col-sm-6 col-md-4 col-lg-4">
+          <div class="mb-2">
+              <span>Moving Averages: </span> <span id="maSignal"></span>
           </div>
-    </section>
+        <img id="maImg" class="imgIndicators mb-4 mb-sm-4">
+      </div>
+      <div class="col-12 col-sm-6 col-md-4 col-lg-4">
+          <div class="mb-2">
+              <span>Relative Strength Index: </span> <span id="rsiSignal"></span>
+          </div>
+        <img id="rsiImg" class="imgIndicators mb-4 mb-sm-4">
+      </div>
+    </div>
+  </div>
+</section>
 
+<!--Info -->
+<section style="display: none" id="info">
+  <div id="info-content-box" class="text-center container">
 
+    <h3>Crypto Info</h3>
+    <div class="content-title-underline"></div>
 
+    <div class="owl-carousel owl-theme">
 
+      <div class="item">
+        <div class="componentTitle">
+          <img class="tweetImage" src="IMAGES/twitter_icon.png">
+          <span>Tweets</span>
+        </div>
+        <hr>
+        <div id="tweetsContainer" class="row item">
+        </div>
+      </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-    crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-    crossorigin="anonymous"></script>
-  <script src="javascript/kendo.all.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/5.2.0/math.min.js"></script>
-  <script src="./javascript/app.js"></script>
+      <div class="item">
+        <div class="componentTitle">
+          <img class="tweetImage" src="IMAGES/news.png">
+          <span> News</span>
+        </div>
+        <hr>
+        <div id="newsContainer" class="row item">
+        </div>
+      </div>
+
+      <div id="cryptoInfoContainer" class="item">
+        <p>
+          Hello crypto info
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!--About US -->
+<section id="about">
+  <div id="about-content-box">
+    <h3 style="padding-left: 20px">About us</h3>
+    <div class="content-title-left"></div>
+    <div class="row">
+      <div class="col-12 col-sm-8 mb-3 mb-sm-0 descriptionContainer">
+        <div class="description pt-md-0 pt-2 pt-sm-2 text-justify">
+          <p>
+            We want to make crypto currency decitions easier for you to take, getting rid of the ugly data,
+            big charts, thousand of pages in the web and all of your expert friends who already made some money.
+          </p>
+          <p>
+            But don’t misunderstand our message, this web app is for beginners for sure, that’s why we also want
+            help you to learn some basic terms, analyze information in simple charts, and enjoy having your money
+            growing safety.
+          </p>
+          <p>So, here we are, a business lady, a finance guru and a programmer joined together to develop this tool
+            to give you real advice and help. </p>
+        </div>
+      </div>
+      <div class="col-12 col-sm-4 imgDescription">
+        <div>
+          <img src="./IMAGES/image4.jpg" class="imgAbout mb-2 mb-sm-0 mb-md-0 mb-lg-0">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+  crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+  crossorigin="anonymous"></script>
+<script src="javascript/kendo.all.min.js"></script>
+<script src="./javascript/owl.carousel.min.js"></script>
+<script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/5.2.0/math.min.js"></script>
+<script src="./javascript/app.js"></script>
 </body>
 
 </html>
