@@ -225,6 +225,7 @@ function cryptoChangeActions() {
     $.when(twitterCall(), newsCall()).done(function (twitterResponse, newsResponse) {
         twitterCallback(twitterResponse[0]);
         newsCallBack(newsResponse[0]);
+        cryptoInfoDisplay();
         startCarrousel();
     });
 }
@@ -268,6 +269,64 @@ function twitterCall() {
         searchTerm: currentCurrency.name
     }
     return ajaxCall(twitterUrl, data);
+}
+
+
+function cryptoInfoDisplay(){
+    var containerRow = $('#cryptoInfoContainer');
+    console.log(currentCurrency.shortName);
+    containerRow.empty();
+    if (currentCurrency.shortName==='BTC'){
+        containerRow.addClass("container");
+        var infoContentContainer = $('<div class="col-12">');
+        var infoText = $('<p class="text-justify">').text('Bitcoin is a digital currency that was created in 2009 by an unknown person or group of people using the alias Satoshi Nakamoto (Click here to go to Satoshi Nakamoto original white paper). Bitcoin works on a decentralized system meaning that transactions are made with no middle men- meaning no banks! Bitcoin can be used to book hotels on Expedia, shop for furniture on Overstock and buy Xbox games. But much of the hype is about getting rich by trading it, and it’s why we are here to help.');
+        
+        var moreInfoContainer = $('<div class="row text-center">');
+        var moreInfoColumn = $('<div class="col-md-12 col-sm-12 col-12">');
+        var moreInfo = $("<p>").text('Go to the following links to get more information');
+        moreInfoColumn.append(moreInfo);
+        moreInfoContainer.append(moreInfoColumn);
+
+        var linksContainer = $('<div class="row text-center">');
+        var link1Column = $('<div class="col-md-4 col-sm-6 col-12">');
+        var link1 = $('<a>').text('Satoshi Nakamoto White paper').attr("href","https://bitcoin.org/bitcoin.pdf");
+        link1.attr("target", "_blank");
+        link1Column.append(link1);
+        var link2Column = $('<div class="col-md-4 col-sm-6 col-12">');
+        var link2 = $('<a>').text('Getting started with bitcoin').attr("href","https://bitcoin.org/en/getting-started");
+        link2.attr("target", "_blank");
+        link2Column.append(link2);
+        var link3Column = $('<div class="col-md-4 col-sm-6 col-12">');
+        var link3 = $('<a>').text('What is bitcoin?').attr("href","https://www.coindesk.com/information/what-is-bitcoin/");
+        link3.attr("target", "_blank");
+        link3Column.append(link3);
+        linksContainer.append(link1Column,link2Column,link3Column); 
+        infoContentContainer.append(infoText, moreInfoContainer, linksContainer);
+        containerRow.append(infoContentContainer);
+    } else {
+        containerRow.addClass("container");
+        console.log("Im here");
+        var infoContentContainer = $('<div class="col-12">');
+        var infoText = $('<p class="text-justify">').text('Ethereum is a decentralized system, which means it is not controlled by any single governing entity. An absolute majority of online services, businesses and enterprises are built on a centralized system of governance. This approach has been used for hundreds of years, and while history proved time and time again that it’s flawed, its implementation is still necessary when the parties don’t trust each other.Ethereum took the technology behind Bitcoin and substantially expanded its capabilities. It is a whole network, with its own Internet browser, coding language and payment system. Most importantly, it enables users to create decentralized applications on Ethereum’s Blockchain.');
+        var moreInfoContainer = $('<div class="row text-center">');
+        var moreInfoColumn = $('<div class="col-md-12 col-sm-12 col-12">');
+        var moreInfo = $("<p>").text('Go to the following links to get more information');
+        moreInfoColumn.append(moreInfo);
+        moreInfoContainer.append(moreInfoColumn);
+
+        var linksContainer = $('<div class="row text-center">');
+        var link1Column = $('<div class="col-md-4 col-sm-6 col-12">');
+        var link1 = $('<a>').text('Learn More').attr("href","https://www.ethereum.org");
+        link1.attr("target", "_blank");
+        link1Column.append(link1);
+        var link2Column = $('<div class="col-md-4 col-sm-6 col-12">');
+        var link2 = $('<a>').text('Etherum for Begginers').attr("href","https://blockgeeks.com/guides/ethereum/");
+        link2.attr("target", "_blank");
+        link2Column.append(link2);
+        linksContainer.append(link1Column,link2Column); 
+        infoContentContainer.append(infoText, moreInfoContainer, linksContainer);
+        containerRow.append(infoContentContainer);
+    }
 }
 
 function newsCallBack(news){

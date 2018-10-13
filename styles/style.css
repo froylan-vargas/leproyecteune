@@ -223,8 +223,9 @@ body {
 
 #cryptoInfoContainer{
     height: 430px;
-    background: aqua;
+    background: whitesmoke;
     padding-top: 20px;
+    overflow-y: scroll;
 }
 
 .newsImage {
